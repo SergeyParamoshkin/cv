@@ -55,9 +55,4 @@ jobs:
         with:
           context: .
           push: true
-          tags: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_NAME }}
-          secrets: |
-            "github_token=${{ secrets.DOCKERHUB_TOKEN }}"
-          build-args: |
-            VERSION=${{ env.TAG_NAME }}
-            COMMIT=${{github.sha}}
+          tags: serg3091:${{ env.TAG_NAME }}
