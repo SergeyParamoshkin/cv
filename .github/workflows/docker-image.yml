@@ -1,0 +1,63 @@
+name: v1
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - "develop"
+    tags:
+      - "v*"
+  pull_request:
+    branches:
+      - "master"
+      - "develop"
+
+env:
+  DOCKERHUB_REPO: "serg3091"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set variables (tags)
+        if: ${{ github.ref_type == 'tag' }}
+        run: |
+          echo "CLONE_BRANCH_OR_TAG=$GITHUB_REF_NAME" >> $GITHUB_ENV
+          echo "TAG_NAME=$GITHUB_REF_NAME" >> $GITHUB_ENV
+      - name: Set variables (regular branches)
+        if: ${{ github.ref_type == 'branch' }}
+        run: |
+          branch=$(echo $GITHUB_REF_NAME | sed 's|/|-|g') 
+          echo "CLONE_BRANCH_OR_TAG=$GITHUB_REF_NAME" >> $GITHUB_ENV
+          echo "TAG_NAME=develop" >> $GITHUB_ENV
+      - name: Set variables (master branch)
+        if: ${{ github.ref_type == 'branch' && github.ref_name == 'master' }}
+        run: |
+          echo "CLONE_BRANCH_OR_TAG=master" >> $GITHUB_ENV
+          echo "TAG_NAME=develop" >> $GITHUB_ENV
+
+      # Display the variables set above, just in case.
+      - name: Check variables
+        run: |
+          echo "CLONE_BRANCH_OR_TAG: $CLONE_BRANCH_OR_TAG"
+          echo "CHECKOUT_REF: $CHECKOUT_REF"
+          echo "TAG_NAME: $TAG_NAME"
+
+      - name: Login to registry
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          push: true
+          tags: ${{ env.DOCKERHUB_REPO }}:${{ env.TAG_NAME }}
+          secrets: |
+            "github_token=${{ secrets.DOCKERHUB_TOKEN }}"
+          build-args: |
+            VERSION=${{ env.TAG_NAME }}
+            COMMIT=${{github.sha}}
