@@ -1,4 +1,4 @@
-FROM node:18.14.1-alpine3.19 as build
+FROM node:18.14.1-alpine3.17 as build
 WORKDIR /tmp
 COPY package.json /tmp/
 RUN yarn cache clean && yarn install 
