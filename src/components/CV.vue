@@ -28,7 +28,8 @@ export default {
 				'2017-08 - 2018-12 &emsp; > Lead analyst PCRF development team PJSC MTS<br>' +
 				'2018-12 - 2021-07 &emsp; > Team lead development team PJSC MTS<br>' +
 				'2021-07 - 2022-03 &emsp; > Head of development team MTS Digital<br>' +
-				'2022-03 - &nbsp; current &emsp; > Technical manager in Yandex Team<br>'
+				'2022-03 - 2023-07; &emsp; > Technical manager in Yandex Team<br>' + 
+				'2022-03 - &nbsp; current &emsp; > Technical manager in Yandex Cloud, IaaS Core team<br>'
 			],
 			typeSpeed: 20,
 			backSpeed: 0,
