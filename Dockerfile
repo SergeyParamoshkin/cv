@@ -1,7 +1,7 @@
 FROM node:22-alpine AS build
 WORKDIR /tmp
 COPY package*.json /tmp/
-RUN npm ci --omit=dev
+RUN npm ci
 COPY . /tmp
 RUN npm run build
 
