@@ -1,0 +1,38 @@
+/* Error styling */
+.error {
+	color: #f48771;
+}
+
+/* Command name in help */
+.command-name {
+	color: #dcdcaa;
+	font-weight: bold;
+}
+
+/* Download link */
+.download-link {
+	color: var(--color-accent-green);
+	text-decoration: none;
+	border-bottom: 1px dashed;
+}
+
+.download-link:hover {
+	color: var(--color-white);
+}
+
+/* Contact link */
+.contact-link {
+	color: var(--color-accent-green);
+	text-decoration: none;
+}
+
+.contact-link:hover {
+	color: var(--color-white);
+	text-decoration: underline;
+}
+
+/* Skill category header */
+.skill-category {
+	color: var(--color-accent-blue);
+	font-weight: bold;
+}

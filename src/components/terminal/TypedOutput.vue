@@ -23,6 +23,7 @@ export default {
 			default: 15,
 		},
 	},
+	emits: ['complete'],
 	data() {
 		return {
 			typed: null,
@@ -45,6 +46,10 @@ export default {
 				showCursor: false,
 				fadeOut: false,
 				loop: false,
+				contentType: 'html',
+				onComplete: () => {
+					this.$emit('complete');
+				},
 			};
 			this.typed = new Typed(this.$refs.typedElement, options);
 		},

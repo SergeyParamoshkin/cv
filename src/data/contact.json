@@ -1,0 +1,32 @@
+{
+	"contacts": [
+		{
+			"id": "email",
+			"label": "Email",
+			"value": "sergey.paramoshkin@example.com",
+			"icon": "envelope",
+			"link": "mailto:sergey.paramoshkin@example.com"
+		},
+		{
+			"id": "github",
+			"label": "GitHub",
+			"value": "github.com/SergeyParamoshkin",
+			"icon": ["fab", "github"],
+			"link": "https://github.com/SergeyParamoshkin"
+		},
+		{
+			"id": "telegram",
+			"label": "Telegram",
+			"value": "@paramdox",
+			"icon": ["fab", "telegram"],
+			"link": "https://t.me/paradox"
+		},
+		{
+			"id": "linkedin",
+			"label": "LinkedIn",
+			"value": "linkedin.com/in/sergeyparamoshkin",
+			"icon": ["fab", "linkedin"],
+			"link": "https://linkedin.com/in/sergeyparamoshkin"
+		}
+	]
+}

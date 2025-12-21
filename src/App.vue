@@ -1,14 +1,14 @@
 <template>
-	<CVComponent msg="Sergey Paramoshkin" />
+	<Terminal />
 </template>
 
 <script>
-import CVComponent from './components/CV.vue';
+import Terminal from './components/terminal/Terminal.vue';
 
 export default {
 	name: 'App',
 	components: {
-		CVComponent,
+		Terminal,
 	},
 };
 </script>
@@ -16,4 +16,5 @@ export default {
 <style>
 @import './styles/global.css';
 @import './styles/utilities.css';
+@import './styles/terminal.css';
 </style>
