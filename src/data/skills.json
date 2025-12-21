@@ -4,38 +4,91 @@
 			"id": "languages",
 			"name": "Programming Languages",
 			"skills": [
-				{ "name": "Go", "level": "expert", "years": 7 },
-				{ "name": "Python", "level": "advanced", "years": 5 },
-				{ "name": "JavaScript/TypeScript", "level": "intermediate", "years": 3 }
+				{
+					"name": "Go",
+					"level": "expert",
+					"years": 10
+				},
+				{
+					"name": "Python",
+					"level": "advanced",
+					"years": 8
+				},
+				{
+					"name": "JavaScript/TypeScript",
+					"level": "intermediate",
+					"years": 1
+				}
 			]
 		},
 		{
 			"id": "technologies",
 			"name": "Technologies & Frameworks",
 			"skills": [
-				{ "name": "Kubernetes", "level": "expert", "years": 6 },
-				{ "name": "Docker", "level": "expert", "years": 7 },
-				{ "name": "PostgreSQL", "level": "advanced", "years": 8 },
-				{ "name": "Redis", "level": "advanced", "years": 5 },
-				{ "name": "Yandex Cloud", "level": "expert", "years": 3 }
+				{
+					"name": "Kubernetes",
+					"level": "expert",
+					"years": 10
+				},
+				{
+					"name": "Docker",
+					"level": "expert",
+					"years": 10
+				},
+				{
+					"name": "PostgreSQL",
+					"level": "advanced",
+					"years": 8
+				},
+				{
+					"name": "Redis",
+					"level": "advanced",
+					"years": 8
+				},
+				{
+					"name": "Yandex Cloud",
+					"level": "expert",
+					"years": 3
+				}
 			]
 		},
 		{
 			"id": "tools",
 			"name": "Tools & Platforms",
 			"skills": [
-				{ "name": "Git", "level": "expert", "years": 10 },
-				{ "name": "Linux", "level": "expert", "years": 12 },
-				{ "name": "CI/CD (GitLab CI, GitHub Actions)", "level": "advanced", "years": 6 }
+				{
+					"name": "Git",
+					"level": "expert",
+					"years": 10
+				},
+				{
+					"name": "Linux",
+					"level": "expert",
+					"years": 12
+				},
+				{
+					"name": "CI/CD (GitLab CI, GitHub Actions)",
+					"level": "advanced",
+					"years": 6
+				}
 			]
 		},
 		{
 			"id": "soft",
 			"name": "Leadership & Management",
 			"skills": [
-				{ "name": "Team Leadership", "years": 6 },
-				{ "name": "Technical Architecture", "years": 5 },
-				{ "name": "Mentoring", "years": 4 }
+				{
+					"name": "Team Leadership",
+					"years": 6
+				},
+				{
+					"name": "Technical Architecture",
+					"years": 7
+				},
+				{
+					"name": "Mentoring",
+					"years": 4
+				}
 			]
 		}
 	]

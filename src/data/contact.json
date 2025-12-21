@@ -3,9 +3,9 @@
 		{
 			"id": "email",
 			"label": "Email",
-			"value": "sergey.paramoshkin@example.com",
+			"value": "serg3091@mail.ru",
 			"icon": "envelope",
-			"link": "mailto:sergey.paramoshkin@example.com"
+			"link": "mailto:serg3091@mail.ru"
 		},
 		{
 			"id": "github",
@@ -19,7 +19,7 @@
 			"label": "Telegram",
 			"value": "@paramdox",
 			"icon": ["fab", "telegram"],
-			"link": "https://t.me/paradox"
+			"link": "https://t.me/paramdox"
 		},
 		{
 			"id": "linkedin",
