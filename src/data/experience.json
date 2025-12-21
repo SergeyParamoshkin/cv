@@ -1,0 +1,58 @@
+{
+	"positions": [
+		{
+			"id": "pos-1",
+			"period": { "start": "2011-05", "end": "2014-03" },
+			"title": "Specialist PCRS Support team",
+			"current": false
+		},
+		{
+			"id": "pos-2",
+			"period": { "start": "2014-05", "end": "2016-03" },
+			"title": "Lead specialist PCRS Support team",
+			"current": false
+		},
+		{
+			"id": "pos-3",
+			"period": { "start": "2016-03", "end": "2017-08" },
+			"title": "DevOps BigData team MTS Group",
+			"current": false
+		},
+		{
+			"id": "pos-4",
+			"period": { "start": "2017-08", "end": "2018-12" },
+			"title": "Lead analyst PCRF development team PJSC MTS",
+			"current": false
+		},
+		{
+			"id": "pos-5",
+			"period": { "start": "2018-12", "end": "2021-07" },
+			"title": "Team lead development team PJSC MTS",
+			"current": false
+		},
+		{
+			"id": "pos-6",
+			"period": { "start": "2021-07", "end": "2022-03" },
+			"title": "Head of development team MTS Digital",
+			"current": false
+		},
+		{
+			"id": "pos-7",
+			"period": { "start": "2022-03", "end": "2023-07" },
+			"title": "Technical manager in Yandex Team",
+			"current": false
+		},
+		{
+			"id": "pos-8",
+			"period": { "start": "2023-07", "end": "2024-10" },
+			"title": "Technical manager in Yandex Cloud, IaaS Core team",
+			"current": false
+		},
+		{
+			"id": "pos-9",
+			"period": { "start": "2024-10", "end": null },
+			"title": "Lead of k10 team in Yandex Cloud, Foundation service, Core team",
+			"current": true
+		}
+	]
+}

@@ -1,0 +1,38 @@
+:root {
+	/* Colors */
+	--color-bg-primary: #0a0a0a;
+	--color-text-primary: #e5e7eb;
+	--color-accent-green: #4ade80;
+	--color-accent-blue: #60a5fa;
+	--color-white: #ffffff;
+
+	/* Typography */
+	--font-mono: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', monospace;
+	--font-size-base: 15px;
+	--font-size-icon-apple: 18px;
+	--font-size-icon-arrow: 16px;
+
+	/* Spacing */
+	--spacing-xs: 2px;
+	--spacing-sm: 5px;
+	--spacing-md: 10px;
+
+	/* Layout */
+	--max-width-content: 1200px;
+	--line-height-base: 1.6;
+}
+
+@media (max-width: 768px) {
+	:root {
+		--font-size-base: 14px;
+		--font-size-icon-apple: 16px;
+		--font-size-icon-arrow: 14px;
+	}
+}
+
+@media (max-width: 480px) {
+	:root {
+		--font-size-base: 13px;
+		--line-height-base: 1.8;
+	}
+}

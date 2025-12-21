@@ -1,0 +1,28 @@
+.terminal-apple {
+	color: var(--color-white);
+	margin-right: var(--spacing-sm);
+	font-size: var(--font-size-icon-apple);
+}
+
+.terminal-arrow {
+	color: var(--color-accent-green);
+	margin-left: var(--spacing-sm);
+	margin-right: var(--spacing-sm);
+	font-size: var(--font-size-icon-arrow);
+}
+
+.terminal-console {
+	color: var(--color-accent-blue);
+	font-weight: 500;
+}
+
+@keyframes blink {
+	0%,
+	50% {
+		opacity: 1;
+	}
+	51%,
+	100% {
+		opacity: 0;
+	}
+}

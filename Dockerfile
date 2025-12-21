@@ -1,9 +1,11 @@
-FROM node:18.14.1-alpine3.17 as build
+FROM node:22-alpine AS build
 WORKDIR /tmp
-COPY package.json /tmp/
-RUN yarn cache clean && yarn install 
+COPY package*.json /tmp/
+RUN npm ci --omit=dev
 COPY . /tmp
-RUN yarn build
+RUN npm run build
 
-FROM nginx:1.23.1-alpine as app
+FROM nginx:1.27-alpine AS app
 COPY --from=build /tmp/dist /usr/share/nginx/html/
+EXPOSE 80
+CMD ["nginx", "-g", "daemon off;"]

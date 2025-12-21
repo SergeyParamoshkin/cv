@@ -1,0 +1,40 @@
+@import './variables.css';
+
+* {
+	margin: 0;
+	padding: 0;
+	box-sizing: border-box;
+}
+
+body {
+	background-color: var(--color-bg-primary);
+	overflow-x: hidden;
+}
+
+#app {
+	font-family: var(--font-mono);
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	text-align: left;
+	color: var(--color-text-primary);
+	padding: 5vh 5vw;
+	max-width: var(--max-width-content);
+	line-height: var(--line-height-base);
+}
+
+@media (max-width: 768px) {
+	#app {
+		padding: 3vh 4vw;
+	}
+}
+
+@media (max-width: 480px) {
+	#app {
+		padding: 2vh 3vw;
+	}
+}
+
+p {
+	font-size: var(--font-size-base);
+	display: inline;
+}
