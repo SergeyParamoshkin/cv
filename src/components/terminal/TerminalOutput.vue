@@ -37,6 +37,7 @@
 				:content="entry.output"
 				:type="entry.renderType"
 				:render-component="entry.renderComponent"
+				:skip="skip"
 				@complete="$emit('animation-complete', entry.id)"
 			/>
 		</template>
@@ -65,6 +66,11 @@ export default {
 		showWelcome: {
 			type: Boolean,
 			default: true,
+		},
+		/** @type {boolean} Finish typing animations immediately */
+		skip: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	emits: ['animation-complete'],

@@ -4,6 +4,21 @@ import contactData from '@/data/contact.json';
 import educationData from '@/data/education.json';
 
 /**
+ * Escape a string for interpolation into HTML output.
+ *
+ * Command output is rendered with v-html, so echoing raw input back would let
+ * whatever is typed into the prompt render as markup.
+ * @param {string} value - Untrusted string
+ * @returns {string}
+ */
+function escapeHtml(value) {
+	return String(value).replace(
+		/[&<>"']/g,
+		(char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]
+	);
+}
+
+/**
  * Command result class
  */
 class CommandResult {
@@ -159,9 +174,11 @@ commandRegistry.set(
 commandRegistry.set(
 	'download',
 	new Command('download', 'Download CV as PDF', () => {
+		// No PDF is published yet, so this deliberately renders no link at all -
+		// a dead one is worse than an honest message.
 		return new CommandResult({
 			output:
-				'CV download: <a href="/cv.pdf" download class="download-link">📄 Download PDF</a><br>(Feature coming soon)',
+				'A downloadable PDF is not published yet. Use <span class="command-name">contact</span> to reach me directly.',
 			renderType: 'typed',
 		});
 	})
@@ -198,7 +215,7 @@ export class CommandProcessor {
 
 		if (!command) {
 			return new CommandResult({
-				output: `Command not found: <span class="error">${commandName}</span><br>Type 'help' for available commands.`,
+				output: `Command not found: <span class="error">${escapeHtml(commandName)}</span><br>Type 'help' for available commands.`,
 				renderType: 'static',
 			});
 		}

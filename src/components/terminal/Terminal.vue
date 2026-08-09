@@ -4,9 +4,12 @@
 			<TerminalOutput
 				:history="outputHistory"
 				:show-welcome="showWelcome"
+				:skip="skipAnimation"
 				@animation-complete="onAnimationComplete"
 			/>
 		</div>
+
+		<p v-if="autoplayRunning" class="skip-hint">Press any key to show everything at once</p>
 
 		<TerminalInput :command-history="commandHistory" @command="handleCommand" />
 	</div>
@@ -18,7 +21,11 @@ import TerminalInput from './TerminalInput.vue';
 import { useTerminalState } from '@/composables/useTerminalState';
 import { useAutoScroll } from '@/composables/useAutoScroll';
 import { commandProcessor } from '@/services/commandProcessor';
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue';
+
+const AUTOPLAY_COMMANDS = ['experience', 'skills', 'education', 'contact'];
+const AUTOPLAY_START_DELAY = 600;
+const AUTOPLAY_GAP = 250;
 
 /**
  * Main terminal component
@@ -35,14 +42,21 @@ export default {
 		const scrollContainer = ref(null);
 		const { scrollToBottom } = useAutoScroll(scrollContainer);
 		const showWelcome = ref(true);
-		const commandQueue = ref(['experience', 'skills', 'education', 'contact']);
+		const commandQueue = ref([...AUTOPLAY_COMMANDS]);
 		const currentCommandIndex = ref(-1);
+		const skipAnimation = ref(false);
+		const autoplayDone = ref(false);
+		let pendingTimeout = null;
+
+		/** Autoplay is on screen only while it still has something to reveal. */
+		const autoplayRunning = computed(() => !skipAnimation.value && !autoplayDone.value);
 
 		/**
 		 * Handle command execution
 		 * @param {string} cmd - Command string
+		 * @param {boolean} instant - Render without the typing animation
 		 */
-		const handleCommand = (cmd) => {
+		const handleCommand = (cmd, instant = false) => {
 			const result = commandProcessor.processCommand(cmd);
 
 			if (!result) return;
@@ -51,7 +65,8 @@ export default {
 				clearHistory();
 				showWelcome.value = false;
 			} else {
-				addToHistory(cmd, result.output, result.renderType, result.renderComponent);
+				const renderType = instant && result.renderType === 'typed' ? 'static' : result.renderType;
+				addToHistory(cmd, result.output, renderType, result.renderComponent);
 			}
 
 			scrollToBottom();
@@ -63,28 +78,55 @@ export default {
 		const executeNextCommand = () => {
 			currentCommandIndex.value++;
 			if (currentCommandIndex.value < commandQueue.value.length) {
-				const nextCmd = commandQueue.value[currentCommandIndex.value];
-				handleCommand(nextCmd);
+				handleCommand(commandQueue.value[currentCommandIndex.value]);
+			} else {
+				autoplayDone.value = true;
 			}
+		};
+
+		/**
+		 * Abandon the intro animation and reveal the rest of the autoplay at once.
+		 *
+		 * Typing the whole CV takes more than twenty seconds, which is far longer
+		 * than a visitor will wait to find the contact details, so any interaction
+		 * ends it.
+		 */
+		const skipAutoplay = () => {
+			if (skipAnimation.value || autoplayDone.value) return;
+
+			skipAnimation.value = true;
+			clearTimeout(pendingTimeout);
+
+			while (currentCommandIndex.value + 1 < commandQueue.value.length) {
+				currentCommandIndex.value++;
+				handleCommand(commandQueue.value[currentCommandIndex.value], true);
+			}
+
+			autoplayDone.value = true;
+			scrollToBottom();
 		};
 
 		/**
 		 * Handle animation completion
 		 * @param {string} entryId - Entry ID
 		 */
-		const onAnimationComplete = (entryId) => {
-			console.log('Animation complete:', entryId);
-			// Execute next command after animation completes
-			setTimeout(() => {
-				executeNextCommand();
-			}, 500);
+		const onAnimationComplete = () => {
+			if (skipAnimation.value || autoplayDone.value) return;
+
+			pendingTimeout = setTimeout(executeNextCommand, AUTOPLAY_GAP);
 		};
 
 		onMounted(() => {
-			// Start auto-execution of commands
-			setTimeout(() => {
-				executeNextCommand();
-			}, 1000);
+			window.addEventListener('keydown', skipAutoplay);
+			window.addEventListener('pointerdown', skipAutoplay);
+
+			pendingTimeout = setTimeout(executeNextCommand, AUTOPLAY_START_DELAY);
+		});
+
+		onBeforeUnmount(() => {
+			window.removeEventListener('keydown', skipAutoplay);
+			window.removeEventListener('pointerdown', skipAutoplay);
+			clearTimeout(pendingTimeout);
 		});
 
 		return {
@@ -92,6 +134,8 @@ export default {
 			commandHistory,
 			scrollContainer,
 			showWelcome,
+			skipAnimation,
+			autoplayRunning,
 			handleCommand,
 			onAnimationComplete,
 		};
@@ -106,6 +150,7 @@ export default {
 	height: 100vh;
 	background-color: var(--color-bg-primary);
 	overflow: hidden;
+	position: relative;
 }
 
 .terminal-scrollable {
@@ -113,6 +158,16 @@ export default {
 	overflow-y: auto;
 	padding: var(--spacing-md);
 	padding-bottom: 100px;
+}
+
+.skip-hint {
+	position: absolute;
+	right: var(--spacing-md);
+	bottom: 72px;
+	margin: 0;
+	font-size: 0.8em;
+	opacity: 0.55;
+	pointer-events: none;
 }
 
 /* Scrollbar styling */
@@ -150,6 +205,10 @@ export default {
 		padding: var(--spacing-xs);
 		padding-bottom: 140px;
 		font-size: 0.9em;
+	}
+
+	.skip-hint {
+		display: none;
 	}
 }
 </style>

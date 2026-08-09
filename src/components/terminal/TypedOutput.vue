@@ -1,5 +1,5 @@
 <template>
-	<span ref="typedElement" class="typed-output"></span>
+	<span ref="typedElement" class="typed-output" :class="{ 'is-finished': finished }"></span>
 </template>
 
 <script>
@@ -22,20 +22,35 @@ export default {
 			type: Number,
 			default: 15,
 		},
+		/** @type {boolean} Finish the animation immediately, showing the full text */
+		skip: {
+			type: Boolean,
+			default: false,
+		},
 	},
 	emits: ['complete'],
 	data() {
 		return {
 			typed: null,
+			finished: false,
 		};
 	},
+	watch: {
+		skip(value) {
+			if (value) {
+				this.finish();
+			}
+		},
+	},
 	mounted() {
-		this.initTyped();
+		if (this.skip) {
+			this.finish();
+		} else {
+			this.initTyped();
+		}
 	},
 	beforeUnmount() {
-		if (this.typed) {
-			this.typed.destroy();
-		}
+		this.destroyTyped();
 	},
 	methods: {
 		initTyped() {
@@ -48,10 +63,28 @@ export default {
 				loop: false,
 				contentType: 'html',
 				onComplete: () => {
+					this.finished = true;
 					this.$emit('complete');
 				},
 			};
 			this.typed = new Typed(this.$refs.typedElement, options);
+		},
+		destroyTyped() {
+			if (this.typed) {
+				this.typed.destroy();
+				this.typed = null;
+			}
+		},
+		/**
+		 * Drop the animation and render the full text at once.
+		 */
+		finish() {
+			if (this.finished) return;
+
+			this.destroyTyped();
+			this.$refs.typedElement.innerHTML = this.strings.join('');
+			this.finished = true;
+			this.$emit('complete');
 		},
 	},
 };
@@ -66,6 +99,11 @@ export default {
 	content: '▋';
 	animation: blink 1s step-end infinite;
 	margin-left: var(--spacing-xs);
+}
+
+/* The caret belongs to text still being typed, not to finished output. */
+.typed-output.is-finished::after {
+	content: none;
 }
 
 @keyframes blink {

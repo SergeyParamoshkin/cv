@@ -5,6 +5,7 @@
 			v-if="type === 'typed'"
 			:strings="[content]"
 			:type-speed="typeSpeed"
+			:skip="skip"
 			@complete="$emit('complete')"
 		/>
 
@@ -60,6 +61,11 @@ export default {
 		typeSpeed: {
 			type: Number,
 			default: 15,
+		},
+		/** @type {boolean} Render typed output instantly instead of animating */
+		skip: {
+			type: Boolean,
+			default: false,
 		},
 	},
 	emits: ['complete'],

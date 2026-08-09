@@ -6,6 +6,7 @@ import { ref } from 'vue';
  */
 export function useTerminalState() {
 	const outputHistory = ref([]);
+	let entryCounter = 0;
 	const commandHistory = ref([]);
 	const currentPath = ref('~/code/go');
 
@@ -18,7 +19,9 @@ export function useTerminalState() {
 	 */
 	const addToHistory = (command, output, renderType = 'typed', renderComponent = null) => {
 		const entry = {
-			id: `cmd_${Date.now()}`,
+			// A counter, not a timestamp: skipping the intro adds several entries
+			// within the same millisecond, and duplicate keys break the v-for.
+			id: `cmd_${++entryCounter}`,
 			command,
 			prompt: currentPath.value,
 			output,
