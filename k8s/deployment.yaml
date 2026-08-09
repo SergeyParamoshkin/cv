@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cv-deployment
+  namespace: cv
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cv
+  template:
+    metadata:
+      labels:
+        app: cv
+    spec:
+      containers:
+        - name: cv
+          image: cr.yandex/crpgccd19gdlj8e2k90t/cv:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              cpu: 10m
+              memory: 32Mi
+            limits:
+              cpu: 200m
+              memory: 128Mi
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 20

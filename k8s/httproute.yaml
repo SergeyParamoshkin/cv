@@ -1,0 +1,18 @@
+apiVersion: gateway.networking.k8s.io/v1
+kind: HTTPRoute
+metadata:
+  name: cv-route
+  namespace: cv
+spec:
+  parentRefs:
+    - name: cv-gateway
+  hostnames:
+    - cv.psvpro.ru
+  rules:
+    - matches:
+        - path:
+            type: PathPrefix
+            value: /
+      backendRefs:
+        - name: cv
+          port: 80

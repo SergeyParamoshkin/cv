@@ -1,0 +1,14 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: psvpro-certificate
+  namespace: cv
+spec:
+  secretName: psvpro-tls
+  issuerRef:
+    name: letsencrypt-dns01-issuer
+    kind: ClusterIssuer
+  commonName: psvpro.ru
+  dnsNames:
+    - psvpro.ru
+    - "*.psvpro.ru"

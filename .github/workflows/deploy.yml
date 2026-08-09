@@ -1,0 +1,70 @@
+name: build & deploy
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+    tags:
+      - "v*"
+
+env:
+  REGISTRY: cr.yandex
+  REGISTRY_ID: crpgccd19gdlj8e2k90t
+  CLUSTER_NAME: cv-cluster
+  YC_CLOUD_ID: b1g6odbp4pgvn6ud4blm
+  YC_FOLDER_ID: b1g57hlukjsl0m5tiud3
+
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Log in to Yandex Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: cr.yandex
+          username: json_key
+          password: ${{ secrets.YC_SA_JSON_CREDENTIALS }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          push: true
+          tags: |
+            cr.yandex/${{ env.REGISTRY_ID }}/cv:${{ github.sha }}
+            cr.yandex/${{ env.REGISTRY_ID }}/cv:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
+      - name: Install and configure yc CLI
+        run: |
+          curl -sSL https://storage.yandexcloud.net/yandexcloud-yc/install.sh | bash -s -- -a
+          echo "$HOME/yandex-cloud/bin" >> "$GITHUB_PATH"
+
+      - name: Authenticate to Yandex Cloud
+        run: |
+          echo '${{ secrets.YC_SA_JSON_CREDENTIALS }}' > "$RUNNER_TEMP/key.json"
+          yc config profile create ci
+          yc config set service-account-key "$RUNNER_TEMP/key.json"
+          yc config set cloud-id "$YC_CLOUD_ID"
+          yc config set folder-id "$YC_FOLDER_ID"
+
+      - name: Get kubeconfig
+        run: yc managed-kubernetes cluster get-credentials "$CLUSTER_NAME" --external --force
+
+      - name: Apply manifests
+        run: kubectl apply -k k8s/
+
+      - name: Roll out new image
+        run: |
+          kubectl -n cv set image deployment/cv-deployment \
+            cv=cr.yandex/${REGISTRY_ID}/cv:${GITHUB_SHA}
+          kubectl -n cv rollout status deployment/cv-deployment --timeout=5m
+
+      - name: Clean up credentials
+        if: always()
+        run: rm -f "$RUNNER_TEMP/key.json"
