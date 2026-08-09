@@ -2,3 +2,4 @@ node_modules/*
 dist/*
 .vscode/*
 k8s/secret*.yaml
+public/cv.pdf

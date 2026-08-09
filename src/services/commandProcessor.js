@@ -174,11 +174,9 @@ commandRegistry.set(
 commandRegistry.set(
 	'download',
 	new Command('download', 'Download CV as PDF', () => {
-		// No PDF is published yet, so this deliberately renders no link at all -
-		// a dead one is worse than an honest message.
+		// public/cv.pdf is generated from the same JSON by scripts/build-cv-pdf.js.
 		return new CommandResult({
-			output:
-				'A downloadable PDF is not published yet. Use <span class="command-name">contact</span> to reach me directly.',
+			output: 'CV download: <a href="/cv.pdf" download class="download-link">📄 Download PDF</a>',
 			renderType: 'typed',
 		});
 	})

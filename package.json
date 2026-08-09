@@ -10,7 +10,8 @@
 		"format:check": "prettier --check \"src/**/*.{js,vue,json,css}\"",
 		"test:unit": "vitest",
 		"test:coverage": "vitest run --coverage",
-		"postinstall": "[ -d node_modules/husky ] && husky install || true"
+		"postinstall": "[ -d node_modules/husky ] && husky install || true",
+		"cv:pdf": "node scripts/build-cv-pdf.js"
 	},
 	"dependencies": {
 		"@fortawesome/fontawesome-svg-core": "^6.7.2",
